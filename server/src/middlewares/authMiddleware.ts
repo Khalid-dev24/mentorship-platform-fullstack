@@ -1,12 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import User from "../models/User"; 
+import User from "../models/User";
 
-interface AuthRequest extends Request {
+export interface AuthRequest extends Request {
   user?: any;
 }
 
-export const protect = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const protect = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -24,13 +28,17 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
       return res.status(404).json({ message: "User not found" });
     }
 
-    
-    req.user = user;
+    // Attach user to the request safely
+    (req as AuthRequest).user = user;
+
     next();
   } catch (err) {
     return res.status(401).json({ message: "Unauthorized: Invalid token" });
   }
 };
+
+
+
 
 export const isAdmin = (req: any, res: Response, next: NextFunction) => {
   if (req.user && req.user.role === "admin") {

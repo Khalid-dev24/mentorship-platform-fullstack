@@ -11,7 +11,7 @@ export const sendRequest = async (req: any, res: Response) => {
     const existing = await RequestModel.findOne({
       mentee: req.user._id,
       mentor: mentorId,
-      status: "PENDING", // ensure casing matches your schema
+      status: "PENDING", 
     });
 
     console.log("Existing request found?", existing);

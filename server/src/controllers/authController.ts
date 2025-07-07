@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction} from "express";
 import User from "../models/User";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken";
 
 // REGISTER USER
-export const registerUser = async (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   const { name, email, password, role } = req.body;
 
   try {
@@ -22,7 +22,7 @@ export const registerUser = async (req: Request, res: Response) => {
     });
 
     const token = generateToken({
-      userId: newUser._id.toString(),
+      userId: (newUser as any)._id.toString(),
       role: newUser.role,
     });
 
@@ -42,7 +42,7 @@ export const registerUser = async (req: Request, res: Response) => {
 };
 
 // LOGIN USER
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
   try {
@@ -55,7 +55,7 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid credentials" });
 
     const token = generateToken({
-      userId: user._id.toString(),
+      userId: (user as any)._id.toString(),
       role: user.role,
     });
 

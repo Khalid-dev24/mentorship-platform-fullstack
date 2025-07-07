@@ -4,7 +4,7 @@ import { bookSession, getMySessions } from "../controllers/sessionController";
 
 const router = express.Router();
 
-router.post("/", protect, bookSession); // mentee books
-router.get("/", protect, getMySessions); // mentor/mentee views sessions
+router.post("/", bookSession); // mentee books
+router.get("/", getMySessions); // mentor/mentee views sessions
 
 export default router;
