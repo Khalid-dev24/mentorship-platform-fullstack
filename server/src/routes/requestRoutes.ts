@@ -9,9 +9,9 @@ import {
 
 const router = express.Router();
 
-router.post("/",  sendRequest);
+router.post("/",  sendRequest as any);
 router.get("/sent", getSentRequests);
 router.get("/received",  getReceivedRequests);
-router.put("/:id", updateRequestStatus);
+router.put("/:id", updateRequestStatus as any);
 
 export default router;
