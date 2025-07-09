@@ -14,15 +14,20 @@ const protect = async (req, res, next) => {
     const token = authHeader.split(" ")[1];
     try {
         const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
-        const user = await User_1.default.findById(decoded.userId).select("-password");
+        const user = await User_1.default.findById(decoded.userId).select("name email role");
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        // Attach user to the request safely
-        req.user = user;
+        req.user = {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+            role: user.role,
+        };
         next();
     }
     catch (err) {
+        console.error("Protect error:", err);
         return res.status(401).json({ message: "Unauthorized: Invalid token" });
     }
 };

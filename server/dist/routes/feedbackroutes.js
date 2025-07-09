@@ -6,6 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const feedbackController_1 = require("../controllers/feedbackController");
 const router = express_1.default.Router();
-router.post("/", (req, res, next) => (0, feedbackController_1.leaveFeedback)(req, res));
-router.get("/:sessionId", (req, res, next) => (0, feedbackController_1.getFeedbackForSession)(req, res));
+router.post("/", (req, res) => (0, feedbackController_1.leaveFeedback)(req, res));
+router.get("/:sessionId", (req, res) => (0, feedbackController_1.getFeedbackForSession)(req, res));
 exports.default = router;

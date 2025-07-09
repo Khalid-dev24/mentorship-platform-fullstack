@@ -8,12 +8,12 @@ import {
 const router = express.Router();
 
 
-router.post("/", (req: Request, res: Response, next: NextFunction) =>
-  leaveFeedback(req as AuthRequest, res)
+router.post("/", (req: Request, res: Response) =>
+  leaveFeedback(req, res)
 );
 
-router.get("/:sessionId",  (req: Request, res: Response, next: NextFunction) =>
-  getFeedbackForSession(req as AuthRequest, res)
+router.get("/:sessionId", (req: Request, res: Response) =>
+  getFeedbackForSession(req, res)
 );
 
 export default router;

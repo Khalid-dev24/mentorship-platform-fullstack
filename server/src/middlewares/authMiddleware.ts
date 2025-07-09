@@ -3,7 +3,12 @@ import jwt from "jsonwebtoken";
 import User from "../models/User";
 
 export interface AuthRequest extends Request {
-  user?: any;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
 }
 
 export const protect = async (
@@ -20,25 +25,32 @@ export const protect = async (
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      userId: string;
+      role: string;
+    };
 
-    const user = await User.findById(decoded.userId).select("-password");
+    const user = await User.findById(decoded.userId).select("name email role");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Attach user to the request safely
-    (req as AuthRequest).user = user;
+    
+    req.user = {
+      id: (user as any)._id.toString(),
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
 
     next();
   } catch (err) {
+    console.error("Protect error:", err);
     return res.status(401).json({ message: "Unauthorized: Invalid token" });
   }
+  
 };
-
-
-
 
 export const isAdmin = (req: any, res: Response, next: NextFunction) => {
   if (req.user && req.user.role === "admin") {
