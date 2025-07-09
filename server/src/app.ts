@@ -18,14 +18,20 @@ const app = express();
 
 
 // Middleware
-app.use(cors({
-  origin: [
-    "http://localhost:5173", 
-    "https://mentorship-platforms.netlify.app",
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://mentorship-platforms.netlify.app",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+    optionsSuccessStatus: 200, 
+  })
+);
+
+
+
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
