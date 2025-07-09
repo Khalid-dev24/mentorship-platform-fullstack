@@ -1,9 +1,18 @@
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import User from "../models/User";
 
-
-export const updateProfile = async (req: any, res: Response) => {
+export const updateProfile = async (req: Request, res: Response) => {
   try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
+    const userId = decoded.userId;
+
     const { bio, skills, goals } = req.body;
 
     if (!bio && !skills && !goals) {
@@ -11,7 +20,7 @@ export const updateProfile = async (req: any, res: Response) => {
     }
 
     const updatedUser = await User.findByIdAndUpdate(
-      req.user._id, 
+      userId,
       {
         ...(bio && { bio }),
         ...(skills && { skills }),
@@ -27,9 +36,11 @@ export const updateProfile = async (req: any, res: Response) => {
     res.json({ message: "Profile updated", user: updatedUser });
   } catch (error) {
     console.error("Update Profile Error:", error);
-    res.status(500).json({ message: "Failed to update user profile" });
+    res.status(500).json({ message: "Server error" });
   }
 };
+
+
 
 
 export const getAllMentors = async (req: Request, res: Response) => {

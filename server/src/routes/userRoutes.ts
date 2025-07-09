@@ -4,12 +4,11 @@ import { updateProfile, getAllMentors, getAllUsers, getUserProfile } from "../co
 
 const router = express.Router();
 
+router.put("/me/profile", updateProfile as any);
+
 router.get("/me/profile", getUserProfile);
 router.get("/mentors", getAllMentors);
 router.get("/profile", getUserProfile);
-router.get("/test", (req, res) => {
-  res.send("✅ User route is active");
-});
 
 
 
