@@ -27,6 +27,7 @@ const CreateProfile = () => {
       );
 
       setMessage("✅ Profile created successfully!");
+      console.log("✅ Profile created. Redirecting...");
       setTimeout(() => navigate("/dashboard"), 1500);
     } catch (err) {
       console.error(err);
