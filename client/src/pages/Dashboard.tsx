@@ -10,10 +10,11 @@ const Dashboard = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (user && (!user.bio || !user.skills?.length || !user.goals)) {
+    if (!loading && user && (!user.bio || !user.skills?.length || !user.goals)) {
       navigate("/create-profile");
     }
-  }, [user, navigate]);
+  }, [loading, user, navigate]);
+
 
   useEffect(() => {
     const fetchProfile = async () => {

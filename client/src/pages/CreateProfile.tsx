@@ -1,10 +1,10 @@
 import { useState } from "react";
 import API from "../api/axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const CreateProfile = () => {
   const token = localStorage.getItem("token");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [bio, setBio] = useState("");
   const [skills, setSkills] = useState("");
@@ -27,8 +27,7 @@ const CreateProfile = () => {
       );
 
       setMessage("✅ Profile created successfully!");
-      console.log("✅ Profile created. Redirecting...");
-      setTimeout(() => navigate("/dashboard"), 1500);
+      window.location.href = "/dashboard";
     } catch (err) {
       console.error(err);
       setMessage("❌ Failed to create profile.");
